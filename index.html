@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#16181d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="EasyRec">
+  <title>EasyRec</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <svg class="logo-mic" viewBox="0 0 64 64" aria-hidden="true">
+      <rect x="22" y="6" width="20" height="34" rx="10" fill="#ff8a3d"/>
+      <path d="M14 30 a18 18 0 0 0 36 0" fill="none" stroke="#e6e8eb" stroke-width="5" stroke-linecap="round"/>
+      <path d="M32 48 v8 M22 58 h20" stroke="#e6e8eb" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+    <h1>EasyRec</h1>
+  </header>
+
+  <main>
+    <button id="activate" class="btn btn-main btn-big">🎙 Activar micrófono</button>
+    <p id="msg" class="msg"></p>
+
+    <section class="mic">
+      <div class="meter"><div class="meter-fill"></div><div class="meter-mark"></div></div>
+      <div class="mic-info"><span class="db">—</span><span class="clip">MUY FUERTE</span></div>
+      <p class="hint">Ideal: que los picos lleguen cerca de la rayita blanca.</p>
+    </section>
+
+    <section class="format">
+      <span>Formato</span>
+      <label><input type="radio" name="format" value="wav" checked> WAV <small>(máxima calidad)</small></label>
+      <label><input type="radio" name="format" value="mp3"> MP3 <small>(ocupa menos)</small></label>
+      <label><input type="radio" name="format" value="both"> Los dos</label>
+    </section>
+
+    <section class="recorder">
+      <div class="rec-top">
+        <button id="rec" class="rec" aria-label="Grabar" disabled><span class="rec-dot"></span></button>
+        <div>
+          <div id="time" class="time">00:00:00</div>
+          <div id="state" class="state">Activá el micrófono para empezar</div>
+        </div>
+      </div>
+      <div class="rec-buttons">
+        <button id="pause" class="btn" disabled>⏸ Pausa</button>
+        <button id="marker" class="btn" disabled><span class="flag">🚩</span> Marca</button>
+        <button id="stop" class="btn btn-stop" disabled>■ Detener</button>
+      </div>
+      <p id="keep" class="keep" hidden>No bloquees el celu ni cambies de app mientras grabás.</p>
+    </section>
+
+    <section class="list">
+      <h2>Grabaciones</h2>
+      <p id="space" class="hint"></p>
+      <div id="recordings"></div>
+    </section>
+  </main>
+
+  <div id="name-modal" class="modal" hidden>
+    <form class="modal-box" id="name-form">
+      <h3>¿Cómo se llama esta grabación?</h3>
+      <input id="rec-name" maxlength="100" autocomplete="off" enterkeyhint="go">
+      <p class="hint">Queda guardada en el celu. Después la guardás o compartís desde la lista.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="name-cancel">Cancelar</button>
+        <button type="submit" class="btn btn-main">Grabar</button>
+      </div>
+    </form>
+  </div>
+
+  <audio id="player" playsinline></audio>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
