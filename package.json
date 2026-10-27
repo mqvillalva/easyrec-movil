@@ -1,0 +1,15 @@
+{
+  "name": "easyrec-movil",
+  "private": true,
+  "type": "module",
+  "description": "EasyRec para celular: grabadora web con el micrófono del teléfono",
+  "author": "Mateo Villalva",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "serve": "node tools/serve.mjs",
+    "smoke": "node tools/smoke.mjs"
+  },
+  "devDependencies": {
+    "electron": "^44.9.3"
+  }
+}
