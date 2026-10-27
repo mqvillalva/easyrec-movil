@@ -31,6 +31,11 @@
       <div class="meter"><div class="meter-fill"></div><div class="meter-mark"></div></div>
       <div class="mic-info"><span class="db">—</span><span class="clip">MUY FUERTE</span></div>
       <p class="hint">Ideal: que los picos lleguen cerca de la rayita blanca.</p>
+      <div class="monitor">
+        <label class="switch"><input type="checkbox" id="monitor-on" disabled> 🎧 Escuchar en auriculares</label>
+        <input type="range" id="monitor-vol" min="0" max="1" step="0.05" value="0.8" aria-label="Volumen de los auriculares" hidden>
+        <p id="monitor-warn" class="monitor-warn" hidden>Solo con auriculares con cable puestos: con el parlante del celu se acopla (chilla). Lo que escuchás no cambia lo que se graba.</p>
+      </div>
     </section>
 
     <section class="format">

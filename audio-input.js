@@ -3,7 +3,7 @@
 export const SAMPLE_RATE = 48000;
 
 export function createAudioInput() {
-  let ctx = null, ready = null, analyser = null, sink = null;
+  let ctx = null, ready = null, analyser = null, sink = null, monitor = null;
   let stream = null, source = null, capture = null;
   let onData = null, capturing = false;
   const buf = new Float32Array(2048);
@@ -11,13 +11,17 @@ export function createAudioInput() {
   /** Llamar desde un toque del usuario (en iPhone el audio solo arranca así). */
   async function open() {
     if (!ctx) {
-      ctx = new AudioContext({ sampleRate: SAMPLE_RATE, latencyHint: 'playback' });
+      // 'interactive' = el menor retraso posible, para escuchar en auriculares lo que entra
+      ctx = new AudioContext({ sampleRate: SAMPLE_RATE, latencyHint: 'interactive' });
       ready = ctx.audioWorklet.addModule(new URL('./capture-worklet.js', import.meta.url));
       analyser = ctx.createAnalyser();
       analyser.fftSize = 2048;
       sink = ctx.createGain();
       sink.gain.value = 0;
       sink.connect(ctx.destination); // el motor solo procesa lo que llega a la salida
+      monitor = ctx.createGain(); // escucha en auriculares: apagada (volumen 0) hasta que se prenda
+      monitor.gain.value = 0;
+      monitor.connect(ctx.destination);
     }
     const resumed = ctx.resume(); // antes de cualquier espera, para no perder el "toque"
     close();
@@ -31,6 +35,7 @@ export function createAudioInput() {
     capture.port.onmessage = (e) => onData?.(e.data[0]);
     source.connect(capture).connect(sink);
     source.connect(analyser);
+    source.connect(monitor);
     if (capturing) capture.port.postMessage('start');
   }
 
@@ -58,6 +63,9 @@ export function createAudioInput() {
 
   return {
     open, ensureLive, level,
+    /** Escuchar en auriculares lo que entra (0 = apagado, 1 = volumen normal). No cambia lo que se graba. */
+    setMonitor(volume) { if (monitor) monitor.gain.setTargetAtTime(volume, ctx.currentTime, 0.02); },
+    get monitorVolume() { return monitor ? monitor.gain.value : 0; },
     /** fn recibe un Float32Array (mono) cada 128 muestras. */
     startCapture(fn) { onData = fn; capturing = true; capture?.port.postMessage('start'); },
     stopCapture() { capturing = false; capture?.port.postMessage('stop'); onData = null; },

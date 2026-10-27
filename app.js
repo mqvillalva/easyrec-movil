@@ -79,6 +79,17 @@ function drawMeter() {
   requestAnimationFrame(drawMeter);
 }
 
+// ---------- Escuchar en auriculares (arranca siempre apagado, para que no se acople con el parlante) ----------
+const VOL_KEY = 'easyrec.volumen';
+const monitorOn = $('#monitor-on'), monitorVol = $('#monitor-vol');
+monitorVol.value = localStorage.getItem(VOL_KEY) ?? '0.8';
+function applyMonitor() {
+  monitorVol.hidden = $('#monitor-warn').hidden = !monitorOn.checked;
+  input.setMonitor(monitorOn.checked ? Number(monitorVol.value) : 0);
+}
+monitorOn.addEventListener('change', applyMonitor);
+monitorVol.addEventListener('input', () => { localStorage.setItem(VOL_KEY, monitorVol.value); applyMonitor(); });
+
 // ---------- Formato ----------
 const FORMAT_KEY = 'easyrec.formato';
 const currentFormat = () => $('input[name=format]:checked').value;
@@ -213,6 +224,7 @@ window.addEventListener('beforeunload', (e) => { if (rec) { e.preventDefault(); 
 
 function updateUi() {
   const on = input.isOpen;
+  monitorOn.disabled = !on;
   const recBtn = $('#rec');
   recBtn.disabled = !on || !!rec;
   recBtn.classList.toggle('recording', !!rec && !rec.paused);
@@ -324,7 +336,7 @@ $('#marker').addEventListener('click', addMarker);
 $('#stop').addEventListener('click', stopRecording);
 
 // Para las pruebas automáticas
-window.__easyrec = { addMarker, togglePause, stopRecording, get rec() { return rec; } };
+window.__easyrec = { addMarker, togglePause, stopRecording, get rec() { return rec; }, get monitorVolume() { return input.monitorVolume; } };
 
 // ---------- Arranque ----------
 const unsupported = !window.isSecureContext

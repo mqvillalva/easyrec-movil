@@ -36,6 +36,9 @@
 - iPhone y Android. Solo el micrófono del celu. Pausa, marcas 🚩 (.txt), medidor (−12 dB, MUY FUERTE), lista.
 - Formato elegible como en la compu (WAV por defecto, MP3 320 o los dos). Publicar en GitHub Pages, repo público aparte.
 - Aprobado con el diseño: nombre "EasyRec"; Borrar pide confirmación.
+- Escuchar en auriculares (2026-10-27): interruptor 🎧 apagado SIEMPRE al abrir (para que no se acople con el parlante),
+  control de volumen (se recuerda), aviso "solo con auriculares con cable". No cambia lo que se graba.
+  AudioContext con latencyHint 'interactive' para el menor retraso. Bluetooth: demasiado retraso y en iPhone pasa a su mic.
 - [decidido por Claude, confirmar] si la página queda oculta (bloqueo, otra app, llamada) se pausa sola y al volver avisa;
   pantalla prendida mientras graba; aviso de poco lugar si entran menos de 10 minutos.
 

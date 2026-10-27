@@ -65,6 +65,14 @@ app.whenReady().then(async () => {
     await wait(1000);
     check(await js(`document.querySelector('#activate').offsetParent === null && !document.querySelector('#rec').disabled`), 'micrófono activado y el botón de activar ya no se ve');
     log('  medidor:', await js(`document.querySelector('.db').textContent`));
+    // Escuchar en auriculares (volumen casi en 0 para que no suene en la compu)
+    check(await js(`!document.querySelector('#monitor-on').disabled && !document.querySelector('#monitor-on').checked && window.__easyrec.monitorVolume === 0`), 'escucha en auriculares disponible y apagada de entrada');
+    await js(`const v = document.querySelector('#monitor-vol'); v.value = '0.05'; v.dispatchEvent(new Event('input')); document.querySelector('#monitor-on').click()`);
+    await wait(400);
+    check(await js(`Math.abs(window.__easyrec.monitorVolume - 0.05) < 0.005 && document.querySelector('#monitor-warn').offsetParent !== null && document.querySelector('#monitor-vol').offsetParent !== null`), 'al prenderla suena con su volumen y aparece el aviso');
+    await js(`document.querySelector('#monitor-on').click()`);
+    await wait(400);
+    check(await js(`window.__easyrec.monitorVolume < 0.001 && document.querySelector('#monitor-warn').offsetParent === null`), 'al apagarla deja de sonar');
     await js(`document.querySelector('input[name=format][value=both]').click()`);
     await js(`document.querySelector('#rec').click()`);
     await wait(300);
