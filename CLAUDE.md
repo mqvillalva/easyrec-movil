@@ -9,7 +9,9 @@
 
 ## Cómo se trabaja
 - En la Mac de Mateo (MacBook Pro 2020 Intel, macOS 26, Node 24), carpeta `~/Claude/easyrec-movil`, git local.
-- Se publica en GitHub Pages desde un repo PÚBLICO aparte (`easyrec-movil`): Pages es gratis solo en repos públicos.
+- Se publica en GitHub Pages desde un repo PÚBLICO aparte: `mqvillalva/easyrec-movil` → https://mqvillalva.github.io/easyrec-movil/
+  (Pages es gratis solo en repos públicos). Publicar = `git push` a `main`; se actualiza en ~1 min. `gh` instalado con brew,
+  sesión de Mateo iniciada (2026-10-26).
   El micrófono solo anda con https (o en http://localhost para probar en la compu).
 - Probar: `npm test` (WAV/MP3/textos, sin navegador) y `npm run smoke` (la página real en Electron con micrófono
   simulado y ventana de celular; `SHOT=archivo.png` guarda capturas). `npm run serve` la sirve en http://localhost:8080.
@@ -39,5 +41,5 @@
 
 ## Estado
 - [x] 1. Página completa, probada en la Mac con micrófono simulado (todo bien).
-- [ ] 2. Publicar en GitHub Pages.
+- [x] 2. Publicada en GitHub Pages (2026-10-26).
 - [ ] 3. Prueba de Mateo en un iPhone y en un Android.
